@@ -27,7 +27,7 @@ class TestCommands(unittest.TestCase):
         with open(f, "r") as resps:
             self.cmd_responses = json.load(resps)
 
-        self.obj = vcgencmd2.Vcgencmd2()
+        self.obj = vcgencmd2.Vcgencmd()
 
     def tearDown(self):
         self.patched_co.stop()
