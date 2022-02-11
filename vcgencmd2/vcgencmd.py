@@ -238,13 +238,13 @@ class Vcgencmd:
         if display not in self.__sources["display_id"]:
             raise Exception("{0} must be one of {1}".format(
                 display, self.__sources["display_id"]))
-        out = self.__run_command("display_power 1 " + str(display))
+        return self.__run_command("display_power 1 " + str(display))
 
     def display_power_off(self, display):
         if display not in self.__sources["display_id"]:
             raise Exception("{0} must be one of {1}".format(
                 display, self.__sources["display_id"]))
-        out = self.__run_command("display_power 0 " + str(display))
+        return self.__run_command("display_power 0 " + str(display))
 
     def display_power_state(self, display=0):
         if display not in self.__sources["display_id"]:
