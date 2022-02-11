@@ -1,4 +1,4 @@
-from .vcgencmd2 import subprocess
+from .vcgencmd import subprocess
 
 try:
     subprocess.check_output("vcgencmd")
