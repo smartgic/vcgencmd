@@ -121,7 +121,7 @@ class Vcgencmd:
     def measure_volts(self, block):
         out = self.__verify_command(
             "measure_volts ", block, self.__sources.get("volts"))
-        return float(re.sub("[^\d\.]", "", out))
+        return float(re.sub(r"[^\d.]", "", out))
 
     def otp_dump(self):
         out = self.__verify_command("otp_dump", "", [""])
@@ -135,7 +135,7 @@ class Vcgencmd:
 
     def get_mem(self, typ):
         out = self.__verify_command("get_mem ", typ, self.__sources.get("mem"))
-        return int(re.sub("[^\d]", "", out))
+        return int(re.sub(r"[^\d]", "", out))
 
     def codec_enabled(self, typ):
         out = self.__verify_command(
@@ -187,9 +187,9 @@ class Vcgencmd:
         response = {}
         out = out.split("=")[1]
         out = out.split(" ")
-        response["freq_mhz"] = re.sub("[^\d\.]", "", out[0])
-        response["volts_v"] = re.sub("[^\d\.]", "", out[1])
-        response["temp_c"] = re.sub("[^\d\.]", "", out[2])
+        response["freq_mhz"] = re.sub(r"[^\d.]", "", out[0])
+        response["volts_v"] = re.sub(r"[^\d.]", "", out[1])
+        response["temp_c"] = re.sub(r"[^\d.]", "", out[2])
         return response
 
     def hdmi_timings(self):
@@ -227,7 +227,7 @@ class Vcgencmd:
             return response
 
         out = out.strip()
-        out = re.sub("(?<=\d)\s(?=\d)", " resolution:", out)
+        out = re.sub(r"(?<=\d)\s(?=\d)", " resolution:", out)
         out = out.split(" ")
         for i in out:
             j = i.split(":")
