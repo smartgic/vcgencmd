@@ -16,23 +16,25 @@ class Vcgencmd:
     }
 
     def __run_command(self, cmd):
-
         args = shlex.split(cmd)
         args.insert(0, "vcgencmd")
-        out = subprocess.check_output(args, stderr=subprocess.PIPE).decode("utf-8")
-
+        out = subprocess.check_output(
+            args, stderr=subprocess.PIPE).decode("utf-8")
         return out
 
     def __verify_command(self, cmd, source, source_list):
         cmd = cmd.lower()
         source = source.lower()
         if source not in source_list:
-            raise Exception("{0} must be one of {1}".format(source, source_list))
+            raise Exception("{0} must be one of {1}".format(
+                source, source_list))
         return self.__run_command(cmd + source)
 
     def get_sources(self, typ):
         if typ not in self.__sources.keys():
-            raise Exception("Invalid source type.\n{0} must be one of {1}".format(typ, self.__sources.keys))
+            raise Exception(
+                "Invalid source type.\n{0} must be one of {1}".format(
+                    typ, self.__sources.keys))
         return self.__sources.get(typ)
 
     def vcos_version(self):
@@ -63,23 +65,27 @@ class Vcgencmd:
             response[j[0].strip()] = j[1].strip()
         return response
 
+    def state(s):
+        if s == "1":
+            return False
+        return True
+
     def get_throttled(self):
         out = self.__verify_command("get_throttled", "", [""])
         hex_val = out.split("=")[1].strip()
         binary_val = format(int(hex_val[2:], 16), "020b")
-        state = lambda s: True if s == "1" else False
         response = {}
         response["raw_data"] = hex_val
         response["binary"] = binary_val
         response["breakdown"] = {}
-        response["breakdown"]["0"] = state(binary_val[16:][3])
-        response["breakdown"]["1"] = state(binary_val[16:][2])
-        response["breakdown"]["2"] = state(binary_val[16:][1])
-        response["breakdown"]["3"] = state(binary_val[16:][0])
-        response["breakdown"]["16"] = state(binary_val[0:4][3])
-        response["breakdown"]["17"] = state(binary_val[0:4][2])
-        response["breakdown"]["18"] = state(binary_val[0:4][1])
-        response["breakdown"]["19"] = state(binary_val[0:4][0])
+        response["breakdown"]["0"] = self.state(binary_val[16:][3])
+        response["breakdown"]["1"] = self.state(binary_val[16:][2])
+        response["breakdown"]["2"] = self.state(binary_val[16:][1])
+        response["breakdown"]["3"] = self.state(binary_val[16:][0])
+        response["breakdown"]["16"] = self.state(binary_val[0:4][3])
+        response["breakdown"]["17"] = self.state(binary_val[0:4][2])
+        response["breakdown"]["18"] = self.state(binary_val[0:4][1])
+        response["breakdown"]["19"] = self.state(binary_val[0:4][0])
         return response
 
     def get_throttled_flags(self):
@@ -104,15 +110,17 @@ class Vcgencmd:
 
     def measure_temp(self):
         out = self.__verify_command("measure_temp", "", [""])
-        return float(re.sub("[^\d\.]", "",out))
+        return float(re.sub("[^\d\.]", "", out))
 
     def measure_clock(self, clock):
-        out = self.__verify_command("measure_clock ", clock, self.__sources.get("clock"))
+        out = self.__verify_command(
+            "measure_clock ", clock, self.__sources.get("clock"))
         out = out.split("=")[1]
         return int(out)
 
     def measure_volts(self, block):
-        out = self.__verify_command("measure_volts ", block, self.__sources.get("volts"))
+        out = self.__verify_command(
+            "measure_volts ", block, self.__sources.get("volts"))
         return float(re.sub("[^\d\.]", "", out))
 
     def otp_dump(self):
@@ -130,7 +138,8 @@ class Vcgencmd:
         return int(re.sub("[^\d]", "", out))
 
     def codec_enabled(self, typ):
-        out = self.__verify_command("codec_enabled ", typ, self.__sources.get("codec"))
+        out = self.__verify_command(
+            "codec_enabled ", typ, self.__sources.get("codec"))
         out = out.split("=")[1]
         if out.strip() == "disabled":
             return False
@@ -227,17 +236,20 @@ class Vcgencmd:
 
     def display_power_on(self, display):
         if display not in self.__sources["display_id"]:
-            raise Exception("{0} must be one of {1}".format(diaplay, self.__sources["display_id"]))
+            raise Exception("{0} must be one of {1}".format(
+                diaplay, self.__sources["display_id"]))
         out = self.__run_command("display_power 1 " + str(display))
 
     def display_power_off(self, display):
         if display not in self.__sources["display_id"]:
-            raise Exception("{0} must be one of {1}".format(diaplay, self.__sources["display_id"]))
+            raise Exception("{0} must be one of {1}".format(
+                diaplay, self.__sources["display_id"]))
         out = self.__run_command("display_power 0 " + str(display))
 
     def display_power_state(self, display=0):
         if display not in self.__sources["display_id"]:
-            raise Exception("{0} must be one of {1}".format(diaplay, self.__sources["display_id"]))
+            raise Exception("{0} must be one of {1}".format(
+                diaplay, self.__sources["display_id"]))
         out = self.__run_command("display_power -1 " + str(display))
         if out.split("=")[1].strip() == "0":
             return "off"
