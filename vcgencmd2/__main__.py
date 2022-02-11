@@ -1,4 +1,4 @@
-from .vcgencmd2 import print_overview
+from .vcgencmd import print_overview
 import sys
 
 
