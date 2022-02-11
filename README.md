@@ -1,4 +1,4 @@
-# Python binding for RaspberryPi vcgencmd command-line tool
+# A drop-in replacement for `vcgencmd` - Python binding for RaspberryPi `vcgencmd` command-line tool
 
 Will be updated soon...
 
