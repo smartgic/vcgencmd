@@ -11,7 +11,7 @@ except ImportError:
     import mock
 
 with mock.patch('subprocess.check_output') as skip_checking_binary:
-    import vcgencmd
+    import vcgencmd2
 
 
 class TestCommands(unittest.TestCase):
@@ -27,7 +27,7 @@ class TestCommands(unittest.TestCase):
         with open(f, "r") as resps:
             self.cmd_responses = json.load(resps)
 
-        self.obj = vcgencmd.Vcgencmd()
+        self.obj = vcgencmd2.Vcgencmd2()
 
     def tearDown(self):
         self.patched_co.stop()
@@ -405,7 +405,7 @@ class TestCommands(unittest.TestCase):
         self.assertDictEqual(expected, self.obj.dispmanx_list())
 
     def test_dispmanx_list_values(self):
-        #TODO: Need example data for this added
+        # TODO: Need example data for this added
         pass
 
     def test_display_power_state(self):
@@ -421,7 +421,6 @@ class TestCommands(unittest.TestCase):
             self.call_arguments(["display_power", "-1", str(disp)])
             self.mock_co.reset_mock()
 
-    
     def test_display_power_on(self):
         self.obj.display_power_on(0)
         self.call_arguments(["display_power", "1", "0"])

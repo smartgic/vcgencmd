@@ -1,6 +1,6 @@
-from .vcgencmd import *
+from .vcgencmd2 import *
 
 try:
-	subprocess.check_output("vcgencmd")
+    subprocess.check_output("vcgencmd")
 except Exception:
-	raise ImportError("\"vcgencmd\" command not found")
+    raise ImportError("\"vcgencmd\" command not found")
