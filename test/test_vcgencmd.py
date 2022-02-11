@@ -116,7 +116,7 @@ class TestCommands(unittest.TestCase):
         expected = {
             'raw_data': '0x50000',
             'binary': '01010000000000000000',
-            'breakdown':{
+            'breakdown': {
                 '0': False,
                 '1': False,
                 '2': False,
