@@ -110,7 +110,7 @@ class Vcgencmd:
 
     def measure_temp(self):
         out = self.__verify_command("measure_temp", "", [""])
-        return float(re.sub("[^\d\.]", "", out))
+        return float(re.sub(r"[^\d.]", "", out))
 
     def measure_clock(self, clock):
         out = self.__verify_command(
