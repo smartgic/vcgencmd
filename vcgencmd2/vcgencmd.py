@@ -57,12 +57,12 @@ class Vcgencmd:
 
     def get_camera(self):
         out = self.__verify_command("get_camera", "", [""])
-        out = out.split(" ")
-        out = list(filter(None, out))
+        out = out.replace(",", "")
         response = {}
-        for i in out:
-            j = i.split("=")
-            response[j[0].strip()] = j[1].strip()
+        for i in re.split(" ", out):
+            if "=" in i:
+                j = i.split("=")
+                response[j[0].strip()] = j[1].strip()
         return response
 
     def state(s):
@@ -296,6 +296,8 @@ def print_overview():
     status = stats.get_camera()
     print(mm_fmt.format("supported", status["supported"]))
     print(mm_fmt.format("detected", status["detected"]))
+    print(mm_fmt.format("libcamera interfaces",
+          status["interfaces"]))
 
     print("\nThrottling")
     _print_dict(stats.get_throttled_flags())
